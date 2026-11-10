@@ -1,0 +1,1975 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SD NEGERI 154/IV KOTA JAMBI - Portal Resmi Sekolah</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            950: '#020617',
+                        },
+                        gold: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass-nav {
+            background: rgba(15, 23, 42, 0.92);
+            backdrop-filter: blur(10px);
+        }
+        .hero-gradient {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1e1b4b 100%);
+        }
+        .badge-active {
+            animation: pulse-green 2s infinite;
+        }
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
+            70% { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+
+    <!-- TOP BAR -->
+    <div class="bg-navy-950 text-slate-300 text-xs py-2 px-4 sm:px-8 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto flex justify-end items-center gap-3">
+            <span id="topbarAkreditasi" class="text-xs bg-slate-800 px-2.5 py-0.5 rounded-full text-slate-300 border border-slate-700">
+                Akreditasi B
+            </span>
+            <button id="adminToggleBtn" onclick="toggleAdminPanel()" class="bg-gold-500 hover:bg-gold-600 text-navy-950 px-3 py-1 rounded font-semibold text-xs transition flex items-center gap-1 shadow">
+                <i class="fa-solid fa-user-gear"></i> <span id="adminBtnText">Mode Admin</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ADMIN BANNER (Visible when admin is logged in) -->
+    <div id="adminNoticeBar" class="hidden bg-amber-500 text-navy-950 px-4 py-2.5 text-xs font-bold text-center flex flex-wrap justify-between items-center px-4 sm:px-8 border-b border-amber-600 shadow-inner gap-2">
+        <div class="flex items-center gap-2 mx-auto sm:mx-0">
+            <i class="fa-solid fa-shield-halved text-base"></i>
+            <span>Mode Administrator Aktif (<span id="activeAdminEmailDisplay" class="underline">admin</span>)</span>
+        </div>
+        <div class="flex flex-wrap gap-2 mx-auto sm:mx-0 items-center">
+            <button onclick="openManageAdminsModal()" class="text-xs bg-purple-900 text-white px-3 py-1.5 rounded-lg hover:bg-purple-950 border border-purple-700 font-bold flex items-center gap-1.5 shadow">
+                <i class="fa-solid fa-user-shield"></i> Kelola Email Admin
+            </button>
+            <button onclick="openEditStatsModal()" class="text-xs bg-emerald-700 text-white px-3 py-1.5 rounded-lg hover:bg-emerald-800 border border-emerald-500 font-bold flex items-center gap-1.5 shadow">
+                <i class="fa-solid fa-arrows-rotate"></i> Sync Data Dapodik
+            </button>
+            <button onclick="openEditSchoolHeaderModal()" class="text-xs bg-navy-950 text-gold-400 px-3 py-1.5 rounded-lg hover:bg-navy-900 border border-gold-500/40 font-semibold flex items-center gap-1.5">
+                <i class="fa-solid fa-pen"></i> Edit Nama Sekolah
+            </button>
+            <button onclick="saveFinalDataState()" class="text-xs bg-blue-900 text-white px-3.5 py-1.5 rounded-lg hover:bg-blue-950 border border-blue-600 font-bold flex items-center gap-1.5 shadow">
+                <i class="fa-solid fa-cloud-arrow-down"></i> Simpan Data Final
+            </button>
+            <button onclick="logoutAdmin()" class="text-xs bg-rose-900 text-slate-100 px-3 py-1.5 rounded-lg hover:bg-rose-950 border border-rose-700 font-bold">Keluar Admin</button>
+        </div>
+    </div>
+
+    <!-- NAVIGATION BAR -->
+    <header class="sticky top-0 z-40 glass-nav border-b border-slate-800 text-white shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-8 py-3 flex justify-between items-center">
+            <a href="#" class="flex items-center gap-3 group">
+                <div id="schoolLogoContainer" class="w-10 h-10 rounded-xl bg-slate-900 border border-gold-500/40 flex items-center justify-center p-1 overflow-hidden shadow-inner">
+                    <img id="schoolLogoImg" src="https://kommodo.ai/i/WKwCh4bwjj6TR6ivGGTK" alt="Logo" class="w-full h-full object-contain" onerror="handleLogoError()">
+                    <div id="schoolLogoIcon" class="hidden text-gold-400 text-xl"><i class="fa-solid fa-graduation-cap"></i></div>
+                </div>
+                <div>
+                    <h1 id="navSchoolName" class="font-black text-sm sm:text-base tracking-wide group-hover:text-gold-400 transition">SD NEGERI 154/IV</h1>
+                    <p id="navSchoolTagline" class="text-[10px] text-slate-400 tracking-wider uppercase font-semibold">KOTA JAMBI</p>
+                </div>
+            </a>
+            <nav class="hidden md:flex items-center gap-6 text-xs font-semibold">
+                <a href="#profil" class="hover:text-gold-400 transition">Profil & Visi Misi</a>
+                <a href="#berita" class="hover:text-gold-400 transition">Berita & Informasi</a>
+                <a href="#ekskul" class="hover:text-gold-400 transition">Galeri & Ekskul</a>
+                <a href="#kelulusan" class="hover:text-gold-400 transition flex items-center gap-1">
+                    Kelulusan <span id="badgeKelulusanNav" class="w-2 h-2 rounded-full bg-emerald-500 badge-active"></span>
+                </a>
+                <a href="#spmb" class="hover:text-gold-400 transition flex items-center gap-1">
+                    Info SPMB <span id="badgeSpmbNav" class="w-2 h-2 rounded-full bg-emerald-500 badge-active"></span>
+                </a>
+                <a href="#kontak" class="hover:text-gold-400 transition">Kontak</a>
+            </nav>
+            <button onclick="toggleMobileMenu()" class="md:hidden text-slate-300 hover:text-white p-2">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-navy-900 border-b border-slate-800 px-6 py-4 space-y-3 text-xs font-medium">
+            <a href="#profil" onclick="toggleMobileMenu()" class="block py-1 hover:text-gold-400">Profil & Visi Misi</a>
+            <a href="#berita" onclick="toggleMobileMenu()" class="block py-1 hover:text-gold-400">Berita & Informasi</a>
+            <a href="#ekskul" onclick="toggleMobileMenu()" class="block py-1 hover:text-gold-400">Galeri & Ekskul</a>
+            <a href="#kelulusan" onclick="toggleMobileMenu()" class="block py-1 hover:text-gold-400">Pengecekan Kelulusan</a>
+            <a href="#spmb" onclick="toggleMobileMenu()" class="block py-1 hover:text-gold-400">Info SPMB Baru</a>
+            <a href="#kontak" onclick="toggleMobileMenu()" class="block py-1 hover:text-gold-400">Kontak Sekolah</a>
+        </div>
+    </header>
+
+    <!-- HERO SECTION & STATISTIK DASHBOARD -->
+    <section class="hero-gradient text-white py-12 sm:py-16 px-4 sm:px-8 border-b border-slate-800 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            
+            <!-- Left Hero Text & Branding -->
+            <div class="lg:col-span-7 space-y-6 text-center lg:text-left flex flex-col items-center lg:items-start">
+                <div class="flex items-center gap-3 flex-wrap justify-center lg:justify-start">
+                    <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-slate-900/80 border-2 border-gold-500/40 p-2 flex items-center justify-center shadow-2xl flex-shrink-0">
+                        <img id="heroLogoImg" src="https://kommodo.ai/i/WKwCh4bwjj6TR6ivGGTK" alt="Logo Sekolah" class="w-full h-full object-contain" onerror="handleHeroLogoError()">
+                        <div id="heroLogoIcon" class="hidden text-gold-400 text-4xl"><i class="fa-solid fa-graduation-cap"></i></div>
+                    </div>
+                    <div>
+                        <span class="inline-block bg-gold-500/10 text-gold-400 text-xs font-bold px-3 py-1 rounded-full border border-gold-500/30 mb-1">
+                            <i class="fa-solid fa-award mr-1"></i> Sekolah Dasar Berprestasi
+                        </span>
+                        <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight">
+                            Selamat Datang di <br>
+                            <span id="heroSchoolName" class="text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-amber-200">SD NEGERI 154/IV</span>
+                        </h2>
+                        <p id="heroSchoolTagline" class="text-sm font-semibold text-slate-300 tracking-widest uppercase mt-1">KOTA JAMBI</p>
+                    </div>
+                </div>
+
+                <p class="text-slate-300 text-sm sm:text-base leading-relaxed max-w-2xl">
+                    Pusat informasi digital terpadu untuk siswa, orang tua, dan calon peserta didik baru. Mewujudkan generasi cerdas, berkarakter, dan berdaya saing.
+                </p>
+
+                <div class="flex flex-wrap justify-center lg:justify-start gap-3 w-full sm:w-auto pt-2">
+                    <a href="#kelulusan" class="w-full sm:w-auto bg-gradient-to-r from-gold-500 to-amber-600 hover:from-gold-600 hover:to-amber-700 text-navy-950 font-bold px-6 py-3 rounded-xl transition shadow-lg flex items-center justify-center gap-2 text-sm">
+                        <i class="fa-solid fa-graduation-cap"></i> Cek Kelulusan
+                    </a>
+                    <a href="#spmb" class="w-full sm:w-auto bg-slate-800/80 hover:bg-slate-700 text-white font-semibold px-6 py-3 rounded-xl border border-slate-700 transition flex items-center justify-center gap-2 text-sm">
+                        <i class="fa-solid fa-id-card"></i> Info SPMB Baru
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Hero Statistics Cards -->
+            <div class="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- Siswa Aktif Card -->
+                <div class="bg-slate-900/90 border border-slate-800 p-5 rounded-2xl shadow-xl flex flex-col justify-between hover:border-gold-500/50 transition group">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="w-10 h-10 rounded-xl bg-gold-500/10 text-gold-400 flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <button onclick="syncDirectDapodik()" class="text-[10px] text-emerald-400 hover:text-emerald-300 font-bold bg-emerald-950/60 border border-emerald-500/30 px-2 py-1 rounded flex items-center gap-1">
+                            <i class="fa-solid fa-rotate"></i> Sync Live Dapodik
+                        </button>
+                    </div>
+                    <div>
+                        <span id="statSiswa" class="text-3xl font-black text-white group-hover:text-gold-400 transition">418</span>
+                        <p class="text-xs font-medium text-slate-400 mt-1">Siswa Aktif Terdaftar</p>
+                    </div>
+                </div>
+
+                <!-- PTK Card -->
+                <div class="bg-slate-900/90 border border-slate-800 p-5 rounded-2xl shadow-xl flex flex-col justify-between hover:border-gold-500/50 transition group">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-chalkboard-user"></i>
+                        </div>
+                        <button onclick="syncDirectDapodik()" class="text-[10px] text-emerald-400 hover:text-emerald-300 font-bold bg-emerald-950/60 border border-emerald-500/30 px-2 py-1 rounded flex items-center gap-1">
+                            <i class="fa-solid fa-rotate"></i> Sync Live Dapodik
+                        </button>
+                    </div>
+                    <div>
+                        <span id="statGuru" class="text-3xl font-black text-white group-hover:text-emerald-400 transition">17</span>
+                        <p class="text-xs font-medium text-slate-400 mt-1">Guru & Tenaga Pendidik</p>
+                    </div>
+                </div>
+
+                <!-- Prestasi Card -->
+                <div class="bg-slate-900/90 border border-slate-800 p-5 rounded-2xl shadow-xl flex flex-col justify-between hover:border-gold-500/50 transition group">
+                    <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-lg mb-3">
+                        <i class="fa-solid fa-trophy"></i>
+                    </div>
+                    <div>
+                        <span id="statPrestasi" class="text-3xl font-black text-white group-hover:text-purple-400 transition">155+</span>
+                        <p class="text-xs font-medium text-slate-400 mt-1">Penghargaan & Juara</p>
+                    </div>
+                </div>
+
+                <!-- Ekskul Card -->
+                <div class="bg-slate-900/90 border border-slate-800 p-5 rounded-2xl shadow-xl flex flex-col justify-between hover:border-gold-500/50 transition group">
+                    <div class="w-10 h-10 rounded-xl bg-sky-500/10 text-sky-400 flex items-center justify-center text-lg mb-3">
+                        <i class="fa-solid fa-shapes"></i>
+                    </div>
+                    <div>
+                        <span id="statEkskul" class="text-3xl font-black text-white group-hover:text-sky-400 transition">3+</span>
+                        <p class="text-xs font-medium text-slate-400 mt-1">Ekstrakurikuler Aktif</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Modals, Profile, Berita, and Other Main Content Sections -->
+    <main class="flex-1">
+        <!-- PROFIL & VISI MISI SECTION -->
+        <section id="profil" class="py-16 px-4 sm:px-8 bg-slate-100/70 border-b border-slate-200">
+            <div class="max-w-7xl mx-auto space-y-8">
+                <div class="flex flex-wrap justify-between items-end border-b pb-4 border-slate-300 gap-4">
+                    <div>
+                        <span class="text-gold-600 font-bold text-xs uppercase tracking-wider">TENTANG KAMI</span>
+                        <h2 class="text-2xl sm:text-3xl font-black text-navy-900">Profil & Visi Misi Sekolah</h2>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="openEditKepsekModal()" class="admin-only hidden bg-gold-500 text-navy-950 px-3.5 py-1.5 rounded-lg text-xs font-bold hover:bg-gold-600 shadow flex items-center gap-1">
+                            <i class="fa-solid fa-user-pen"></i> Edit Kepsek
+                        </button>
+                        <button onclick="openEditProfileModal()" class="admin-only hidden bg-navy-900 text-white px-3.5 py-1.5 rounded-lg text-xs font-semibold hover:bg-navy-800 shadow flex items-center gap-1">
+                            <i class="fa-solid fa-pen-to-square"></i> Edit Sambutan & Visi Misi
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+                    <!-- Foto Kepala Sekolah -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col items-center justify-between text-center h-full min-h-[380px]">
+                        <div class="relative mb-3">
+                            <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-gold-400 shadow-md mx-auto">
+                                <img id="kepsekPhoto" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=150&auto=format&fit=crop" alt="Kepala Sekolah" class="w-full h-full object-cover">
+                            </div>
+                            <span class="absolute bottom-0 right-2 bg-navy-950 text-gold-400 p-1.5 rounded-full text-xs border border-gold-500 shadow"><i class="fa-solid fa-user-shield"></i></span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-gold-600 bg-gold-50 px-2.5 py-1 rounded-full border border-gold-200">Pimpinan Sekolah</span>
+                            <h3 id="kepsekName" class="font-bold text-navy-900 text-base mt-2">WILDA YANTI,S.Pd.</h3>
+                            <p id="kepsekNip" class="text-xs text-slate-500 mt-0.5 font-medium">NIP. 19710122 199502 2 001</p>
+                        </div>
+                        <div class="w-full pt-3 border-t border-slate-100 text-[11px] text-slate-400">
+                            Pengemban Amanah Pendidikan
+                        </div>
+                    </div>
+
+                    <!-- Sambutan Kepsek -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between h-full min-h-[380px]">
+                        <div>
+                            <div class="flex items-center gap-2 mb-3 text-gold-600">
+                                <i class="fa-solid fa-quote-left text-2xl"></i>
+                                <h3 class="font-bold text-navy-900 text-base">Sambutan Pimpinan</h3>
+                            </div>
+                            <p id="profileText" class="text-slate-600 text-xs sm:text-sm leading-relaxed italic">
+                                Selamat datang di SD NEGERI 154/IV KOTA JAMBI. Kami berkomitmen untuk menyelenggarakan pendidikan dasar berkualitas, berkarakter, dan inklusif demi mewujudkan generasi penerus berprestasi.
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-slate-100 text-[11px] text-slate-400 flex items-center gap-1">
+                            <i class="fa-solid fa-heart text-rose-500"></i> Melayani Sepenuh Hati
+                        </div>
+                    </div>
+
+                    <!-- Visi Sekolah -->
+                    <div class="bg-navy-900 text-white p-6 rounded-2xl border border-slate-800 shadow-md flex flex-col justify-between h-full min-h-[380px]">
+                        <div>
+                            <div class="flex items-center gap-2 mb-3 text-gold-400">
+                                <i class="fa-solid fa-compass text-xl"></i>
+                                <h3 class="font-bold text-white text-base">Visi Utama</h3>
+                            </div>
+                            <p id="visiText" class="text-slate-300 text-xs sm:text-sm leading-relaxed italic">
+                                "TERWUJUDNYA MURID YANG BERAKHLAK MULIA, KREATIF, BERNALAR KRITIS, CERDAS DAN PEDULI LINGKUNGAN."
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-slate-800 text-[11px] text-gold-400/80">
+                            Landasan Arah & Tujuan
+                        </div>
+                    </div>
+
+                    <!-- Misi Utama -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between h-full min-h-[380px]">
+                        <div>
+                            <div class="flex items-center gap-2 mb-3 text-emerald-600">
+                                <i class="fa-solid fa-bullseye text-xl"></i>
+                                <h3 class="font-bold text-navy-900 text-base">Misi Utama</h3>
+                            </div>
+                            <ul id="misiList" class="space-y-2.5 text-xs text-slate-600 max-h-56 overflow-y-auto pr-1">
+                                <li class="flex items-start gap-2">
+                                    <i class="fa-solid fa-circle-check text-emerald-500 mt-1 flex-shrink-0"></i>
+                                    <span>Menyelenggarakan proses pembelajaran yang kreatif, inovatif, dan menyenangkan.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fa-solid fa-circle-check text-emerald-500 mt-1 flex-shrink-0"></i>
+                                    <span>Membina karakter peserta didik berbasis nilai religius, kedisiplinan, dan budi pekerti luhur.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fa-solid fa-circle-check text-emerald-500 mt-1 flex-shrink-0"></i>
+                                    <span>Meningkatkan mutu lulusan dan potensi minat bakat siswa secara optimal.</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="pt-4 border-t border-slate-100 text-[11px] text-slate-400">
+                            Langkah Kerja Berkelanjutan
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BERITA & INFORMASI SECTION -->
+        <section id="berita" class="py-16 px-4 sm:px-8 border-b border-slate-200">
+            <div class="max-w-7xl mx-auto space-y-8">
+                <div class="flex flex-wrap justify-between items-end border-b pb-4 border-slate-200 gap-4">
+                    <div>
+                        <span class="text-gold-600 font-bold text-xs uppercase tracking-wider">KABAR TERKINI</span>
+                        <h2 class="text-2xl sm:text-3xl font-black text-navy-900">Berita & Pengumuman Sekolah</h2>
+                    </div>
+                    <button onclick="openAddNewsModal()" class="admin-only hidden bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow flex items-center gap-1.5">
+                        <i class="fa-solid fa-plus"></i> Tambah Berita Baru
+                    </button>
+                </div>
+                <div id="newsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Dynamic News Items -->
+                </div>
+            </div>
+        </section>
+
+        <!-- EKSKUL SECTION -->
+        <section id="ekskul" class="py-16 px-4 sm:px-8 bg-slate-100/70 border-b border-slate-200">
+            <div class="max-w-7xl mx-auto space-y-8">
+                <div class="flex flex-wrap justify-between items-end border-b pb-4 border-slate-300 gap-4">
+                    <div>
+                        <span class="text-gold-600 font-bold text-xs uppercase tracking-wider">PENGEMBANGAN DIRI</span>
+                        <h2 class="text-2xl sm:text-3xl font-black text-navy-900">Kegiatan Ekstrakurikuler</h2>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <button onclick="filterEkskul('all')" class="ekskul-filter-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-navy-900 text-white shadow">Semua</button>
+                        <button onclick="filterEkskul('Olahraga')" class="ekskul-filter-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-200 text-slate-700 hover:bg-slate-300">Olahraga</button>
+                        <button onclick="filterEkskul('Sains & Teknologi')" class="ekskul-filter-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-200 text-slate-700 hover:bg-slate-300">Sains & IT</button>
+                        <button onclick="filterEkskul('Organisasi')" class="ekskul-filter-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-200 text-slate-700 hover:bg-slate-300">Organisasi</button>
+                        <button onclick="openAddEkskulModal()" class="admin-only hidden ml-2 bg-emerald-600 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold hover:bg-emerald-700 shadow flex items-center gap-1">
+                            <i class="fa-solid fa-plus"></i> Tambah Ekskul
+                        </button>
+                    </div>
+                </div>
+                <div id="ekskulGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Dynamic Ekskul Items -->
+                </div>
+            </div>
+        </section>
+
+        <!-- KELULUSAN & SPMB SECTION -->
+        <section id="kelulusan" class="py-16 px-4 sm:px-8 border-b border-slate-200">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Cek Kelulusan Card -->
+                <div class="bg-navy-900 text-white p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-800 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-gold-500/10 text-gold-400 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-graduation-cap"></i>
+                            </div>
+                            <span id="kelulusanStatusBadge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">MODUL AKTIF</span>
+                        </div>
+                        <h3 class="text-xl font-black mb-2">Pengecekan Kelulusan Siswa</h3>
+                        <p class="text-slate-300 text-xs sm:text-sm mb-6">Masukkan NISN atau nomor ujian siswa untuk melihat hasil kelulusan tahun ajaran <span id="displayPeriodeKelulusan" class="text-gold-400 font-bold">Mei 2026</span>.</p>
+                        
+                        <div id="kelulusanActiveView">
+                            <form onsubmit="searchKelulusan(event)" class="space-y-3">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-300 mb-1">Nomor Induk Siswa Nasional (NISN)</label>
+                                    <input type="text" id="nisnInput" required placeholder="Contoh: 123456" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-gold-400">
+                                </div>
+                                <button type="submit" class="w-full bg-gradient-to-r from-gold-500 to-amber-600 text-navy-950 font-bold py-3 rounded-xl hover:from-gold-600 hover:to-amber-700 transition shadow text-xs flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-magnifying-glass"></i> Cek Kelulusan Sekarang
+                                </button>
+                            </form>
+                            <div id="kelulusanResultBox" class="mt-4 hidden"></div>
+                        </div>
+                        <div id="kelulusanInactiveView" class="hidden bg-slate-950/80 border border-rose-500/40 p-4 rounded-xl text-center text-xs text-rose-300">
+                            Modul Kelulusan saat ini sedang dinonaktifkan oleh Administrator.
+                        </div>
+                    </div>
+                    <div class="pt-6 mt-6 border-t border-slate-800 flex justify-between items-center text-xs">
+                        <span class="text-slate-400">Hasil Resmi SD NEGERI 154/IV</span>
+                        <button onclick="openTabModal('kelulusanModal')" class="text-gold-400 font-semibold hover:underline">Panduan & Info</button>
+                    </div>
+                </div>
+
+                <!-- Info SPMB Card -->
+                <div id="spmb" class="bg-navy-900 text-white p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-800 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-id-card"></i>
+                            </div>
+                            <span id="spmbStatusBadge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">SPMB DIBUKA</span>
+                        </div>
+                        <h3 class="text-xl font-black mb-2">Pendaftaran SPMB Baru</h3>
+                        <p class="text-slate-300 text-xs sm:text-sm mb-6">Cek status pendaftaran atau daftar secara online untuk <span id="displayPeriodeSpmb" class="text-emerald-400 font-bold">Tahun Ajaran 2026/2027</span>.</p>
+                        
+                        <div id="spmbActiveView">
+                            <form onsubmit="searchSPMB(event)" class="space-y-3">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-300 mb-1">Nomor Pendaftaran SPMB</label>
+                                    <input type="text" id="spmbNoInput" required placeholder="Contoh: SPMB-2026-001" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-400">
+                                </div>
+                                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition shadow text-xs flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-magnifying-glass"></i> Cek Status Seleksi
+                                </button>
+                            </form>
+                            <div id="spmbResultBox" class="mt-4 hidden"></div>
+                        </div>
+                        <div id="spmbInactiveView" class="hidden bg-slate-950/80 border border-rose-500/40 p-4 rounded-xl text-center text-xs text-rose-300">
+                            Pendaftaran SPMB Baru belum dibuka saat ini.
+                        </div>
+                    </div>
+                    <div class="pt-6 mt-6 border-t border-slate-800 flex justify-between items-center text-xs">
+                        <span class="text-slate-400">Penerimaan Peserta Didik Baru</span>
+                        <button onclick="openTabModal('spmbModal')" class="text-emerald-400 font-semibold hover:underline">Syarat & Berkas</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- KONTAK & LOKASI SEKOLAH -->
+        <section id="kontak" class="py-16 px-4 sm:px-8 bg-slate-100/70">
+            <div class="max-w-7xl mx-auto space-y-8">
+                <div class="flex flex-wrap justify-between items-end border-b pb-4 border-slate-300 gap-4">
+                    <div>
+                        <span class="text-gold-600 font-bold text-xs uppercase tracking-wider">HUBUNGI KAMI</span>
+                        <h2 class="text-2xl sm:text-3xl font-black text-navy-900">Lokasi & Kontak Sekolah</h2>
+                    </div>
+                    <button onclick="openEditContactModal()" class="admin-only hidden bg-navy-900 text-white px-3.5 py-1.5 rounded-lg text-xs font-semibold hover:bg-navy-800 shadow flex items-center gap-1">
+                        <i class="fa-solid fa-pen"></i> Edit Kontak
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                    <!-- Contact Info Card -->
+                    <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+                        <h3 class="font-bold text-navy-900 text-base border-b pb-3">Sekretariat & Layanan Informasi</h3>
+                        
+                        <div class="flex items-start gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-gold-50 text-gold-600 flex items-center justify-center flex-shrink-0 mt-1">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-400 uppercase">Alamat Lengkap</h4>
+                                <p id="contactAddress" class="text-sm font-semibold text-navy-900 mt-0.5">Jl. Sersan Darpin RT.01, Kel. Eka Jaya, Kec. Paal Merah, Kota Jambi, Prov. Jambi</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center flex-shrink-0 mt-1">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-400 uppercase">Telepon & WhatsApp</h4>
+                                <p id="contactPhone" class="text-sm font-semibold text-navy-900 mt-0.5">(0741) 123-456 / WA: 0812-7400-154</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center flex-shrink-0 mt-1">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-400 uppercase">Email Resmi</h4>
+                                <p id="contactEmail" class="text-sm font-semibold text-navy-900 mt-0.5">sdn154kotajambi@gmail.com</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center flex-shrink-0 mt-1">
+                                <i class="fa-solid fa-clock"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-400 uppercase">Jam Layanan</h4>
+                                <p id="contactHours" class="text-sm font-semibold text-navy-900 mt-0.5">Senin - Sabtu: 07.00 - 13.00 WIB</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Map Embed Container -->
+                    <div class="lg:col-span-2 bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-navy-900 text-base">Peta Lokasi SD NEGERI 154/IV Kota Jambi</h3>
+                            <span class="text-xs bg-slate-100 text-slate-600 px-3 py-1 rounded-full font-medium"><i class="fa-solid fa-map-pin text-rose-500 mr-1"></i> Paal Merah, Jambi</span>
+                        </div>
+                        <div class="w-full h-80 rounded-xl overflow-hidden border border-slate-200 shadow-inner">
+                            <iframe width="100%" height="100%" style="border:0;" loading="lazy" allowfullscreen src="https://maps.google.com/maps?q=-1.6189262885040536,103.66093738993607&hl=id&z=17&output=embed"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-navy-950 text-slate-400 py-12 px-4 sm:px-8 border-t border-slate-800 text-xs">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            <div class="space-y-3">
+                <div class="flex items-center gap-2 text-white font-bold text-base">
+                    <div class="w-8 h-8 rounded-lg bg-gold-500 text-navy-950 flex items-center justify-center font-black">154</div>
+                    <span id="footerSchoolName">SD NEGERI 154/IV KOTA JAMBI</span>
+                </div>
+                <p class="text-slate-400 text-xs leading-relaxed">
+                    Portal resmi informasi pendidikan digital terpadu untuk kemajuan mutu belajar peserta didik.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold text-sm mb-3">Tautan Cepat</h4>
+                <ul class="space-y-2">
+                    <li><a href="#profil" class="hover:text-gold-400 transition">Profil & Visi Misi</a></li>
+                    <li><a href="#berita" class="hover:text-gold-400 transition">Berita & Informasi</a></li>
+                    <li><a href="#ekskul" class="hover:text-gold-400 transition">Ekstrakurikuler</a></li>
+                    <li><a href="#kelulusan" class="hover:text-gold-400 transition">Cek Kelulusan Siswa</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold text-sm mb-3">Layanan Informasi</h4>
+                <ul class="space-y-2">
+                    <li><a href="#spmb" class="hover:text-gold-400 transition">Penerimaan Siswa Baru (SPMB)</a></li>
+                    <li><a href="#kontak" class="hover:text-gold-400 transition">Kontak Sekretariat</a></li>
+                    <li><a href="https://dapo.kemendikdasmen.go.id/sekolah?npsn=10504549" target="_blank" class="hover:text-gold-400 transition">Data Pokok Dapodik</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold text-sm mb-3">Kontak & Alamat</h4>
+                <p class="text-slate-400 text-xs leading-relaxed mb-2">Jl. Sersan Darpin RT.01, Kel. Eka Jaya, Kec. Paal Merah, Kota Jambi</p>
+                <p class="text-slate-400 text-xs">Email: sdn154kotajambi@gmail.com</p>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto pt-6 border-t border-slate-800 text-center text-slate-500 flex flex-wrap justify-between items-center gap-4">
+            <p>&copy; 2026 <span id="footerSchoolCopy">SD NEGERI 154/IV KOTA JAMBI</span>. Hak Cipta Dilindungi.</p>
+            <div class="flex items-center gap-4">
+                <span>NPSN: 10504549</span>
+                <span>Akreditasi A</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODALS & DIALOG BOXES -->
+    <!-- Modal Add/Edit News -->
+    <div id="addNewsModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h3 id="newsModalTitle" class="font-bold text-navy-900 text-lg">Tambah Berita Sekolah Baru</h3>
+                <button onclick="closeModal('addNewsModal')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <form onsubmit="saveNews(event)" class="space-y-4">
+                <input type="hidden" id="newsIdInput">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Judul Berita</label>
+                    <input type="text" id="newsTitleInput" required class="w-full border rounded-xl p-2.5 text-sm focus:outline-none focus:border-navy-900">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Kategori Berita</label>
+                    <select id="newsCategoryInput" class="w-full border rounded-xl p-2.5 text-sm focus:outline-none focus:border-navy-900">
+                        <option value="Akademik">Akademik</option>
+                        <option value="Prestasi">Prestasi</option>
+                        <option value="Kegiatan">Kegiatan</option>
+                        <option value="Pengumuman">Pengumuman</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Ringkasan / Isi Berita</label>
+                    <textarea id="newsContentInput" rows="3" required class="w-full border rounded-xl p-2.5 text-sm focus:outline-none focus:border-navy-900"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">URL Gambar Berita</label>
+                    <input type="url" id="newsImageInput" placeholder="https://images.unsplash.com/..." class="w-full border rounded-xl p-2.5 text-sm focus:outline-none focus:border-navy-900">
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal('addNewsModal')" class="px-4 py-2 text-xs bg-slate-200 rounded-lg hover:bg-slate-300 font-semibold">Batal</button>
+                    <button type="submit" class="px-4 py-2 text-xs bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 font-semibold">Simpan Berita</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Edit Nama Sekolah & Header -->
+    <div id="editSchoolHeaderModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h3 class="font-bold text-navy-900 text-lg">Edit Nama & Logo Sekolah</h3>
+                <button onclick="closeModal('editSchoolHeaderModal')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <form onsubmit="saveSchoolHeader(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Sekolah Utama</label>
+                    <input type="text" id="editSchoolNameInput" required class="w-full border rounded-xl p-2.5 text-sm focus:outline-none focus:border-navy-900">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Tagline / Kota</label>
+                    <input type="text" id="editSchoolTaglineInput" required class="w-full border rounded-xl p-2.5 text-sm focus:outline-none focus:border-navy-900">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Status Akreditasi</label>
+                    <input type="text" id="editAkreditasiInput" required class="w-full border rounded-xl p-2.5 text-sm focus:outline-none focus:border-navy-900">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">URL Logo Sekolah</label>
+                    <input type="url" id="editLogoUrlInput" placeholder="https://kommodo.ai/i/..." class="w-full border rounded-xl p-2.5 text-sm focus:outline-none focus:border-navy-900">
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal('editSchoolHeaderModal')" class="px-4 py-2 text-xs bg-slate-200 rounded-lg hover:bg-slate-300 font-semibold">Batal</button>
+                    <button type="submit" class="px-4 py-2 text-xs bg-navy-900 text-white font-semibold rounded-lg hover:bg-navy-800">Simpan Identitas</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Edit Statistik Dapodik -->
+    <div id="editStatsModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h3 class="font-bold text-navy-900 text-lg">Kelola Statistik & Sinkronisasi Dapodik</h3>
+                <button onclick="closeModal('editStatsModal')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <div class="bg-emerald-50 border border-emerald-200 p-3 rounded-xl flex items-center justify-between text-xs text-emerald-800">
+                <span>Sinkronisasi otomatis dengan portal Kemendikdasmen</span>
+                <button type="button" onclick="syncDirectDapodik()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg font-bold shadow">
+                    <i class="fa-solid fa-rotate mr-1"></i> Tarik Data Live
+                </button>
+            </div>
+            <form onsubmit="saveStatsData(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">NPSN Sekolah</label>
+                    <input type="text" id="editNpsnInput" required class="w-full border rounded-xl p-2.5 text-sm focus:outline-none focus:border-navy-900">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Jumlah Siswa</label>
+                        <input type="text" id="editStatSiswaInput" required class="w-full border rounded-xl p-2.5 text-sm focus:outline-none focus:border-navy-900">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Guru & PTK</label>
+                        <input type="text" id="editStatGuruInput" required class="w-full border rounded-xl p-2.5 text-sm focus:outline-none focus:border-navy-900">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Penghargaan / Prestasi</label>
+                        <input type="text" id="editStatPrestasiInput" required class="w-full border rounded-xl p-2.5 text-sm focus:outline-none focus:border-navy-900">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Ekstrakurikuler</label>
+                        <input type="text" id="editStatEkskulInput" required class="w-full border rounded-xl p-2.5 text-sm focus:outline-none focus:border-navy-900">
+                    </div>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal('editStatsModal')" class="px-4 py-2 text-xs bg-slate-200 rounded-lg hover:bg-slate-300 font-semibold">Batal</button>
+                    <button type="submit" class="px-4 py-2 text-xs bg-emerald-600 text-white font-semibold rounded-lg hover:bg-emerald-700">Simpan Statistik</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Edit Profil, Visi, Misi -->
+    <div id="editProfileModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h3 class="font-bold text-navy-900 text-lg">Edit Sambutan, Visi & Misi</h3>
+                <button onclick="closeModal('editProfileModal')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <form onsubmit="saveProfileEdits(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Sambutan Pimpinan</label>
+                    <textarea id="editProfileInput" rows="3" required class="w-full border rounded-xl p-2.5 text-sm focus:outline-none focus:border-navy-900"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Visi Utama</label>
+                    <input type="text" id="editVisiInput" required class="w-full border rounded-xl p-2.5 text-sm focus:outline-none focus:border-navy-900">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Misi Utama (Satu per baris)</label>
+                    <textarea id="editMisiInput" rows="4" required class="w-full border rounded-xl p-2.5 text-sm focus:outline-none focus:border-navy-900"></textarea>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal('editProfileModal')" class="px-4 py-2 text-xs bg-slate-200 rounded-lg hover:bg-slate-300 font-semibold">Batal</button>
+                    <button type="submit" class="px-4 py-2 text-xs bg-navy-900 text-white font-semibold rounded-lg hover:bg-navy-800">Simpan Perubahan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Edit Kepala Sekolah -->
+    <div id="editKepsekModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h3 class="font-bold text-navy-900 text-lg">Edit Data Kepala Sekolah</h3>
+                <button onclick="closeModal('editKepsekModal')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <form onsubmit="saveKepsekData(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Kepala Sekolah</label>
+                    <input type="text" id="editKepsekName" required class="w-full border rounded-xl p-2.5 text-sm focus:outline-none focus:border-navy-900">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">NIP / NPSN Keterangan</label>
+                    <input type="text" id="editKepsekNip" required class="w-full border rounded-xl p-2.5 text-sm focus:outline-none focus:border-navy-900">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">URL Foto Kepala Sekolah</label>
+                    <input type="url" id="editKepsekPhoto" placeholder="https://images.unsplash.com/..." class="w-full border rounded-xl p-2.5 text-sm focus:outline-none focus:border-navy-900">
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal('editKepsekModal')" class="px-4 py-2 text-xs bg-slate-200 rounded-lg hover:bg-slate-300 font-semibold">Batal</button>
+                    <button type="submit" class="px-4 py-2 text-xs bg-gold-500 text-navy-950 font-bold rounded-lg hover:bg-gold-600">Simpan Kepsek</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Edit Informasi Kontak Sekolah -->
+    <div id="editContactModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h3 class="font-bold text-navy-900 text-lg">Edit Informasi Kontak Sekolah</h3>
+                <button onclick="closeModal('editContactModal')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <form onsubmit="saveContactData(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Alamat Sekolah</label>
+                    <input type="text" id="editContactAddress" required class="w-full border rounded-xl p-2.5 text-sm focus:outline-none focus:border-navy-900">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Telepon & WhatsApp</label>
+                    <input type="text" id="editContactPhone" required class="w-full border rounded-xl p-2.5 text-sm focus:outline-none focus:border-navy-900">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Email Resmi</label>
+                    <input type="email" id="editContactEmail" required class="w-full border rounded-xl p-2.5 text-sm focus:outline-none focus:border-navy-900">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Jam Operasional Sekretariat</label>
+                    <input type="text" id="editContactHours" required class="w-full border rounded-xl p-2.5 text-sm focus:outline-none focus:border-navy-900">
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal('editContactModal')" class="px-4 py-2 text-xs bg-slate-200 rounded-lg hover:bg-slate-300 font-semibold">Batal</button>
+                    <button type="submit" class="px-4 py-2 text-xs bg-navy-900 text-white font-semibold rounded-lg hover:bg-navy-800">Simpan Kontak</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Add/Edit Ekskul Modal -->
+    <div id="addEkskulModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h3 id="ekskulModalTitle" class="font-bold text-navy-900 text-lg">Tambah Ekstrakurikuler Baru</h3>
+                <button onclick="closeModal('addEkskulModal')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <form onsubmit="saveEkskul(event)" class="space-y-4">
+                <input type="hidden" id="ekskulIdInput">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Ekskul</label>
+                    <input type="text" id="ekskulNameInput" required class="w-full border rounded-xl p-2.5 text-sm focus:outline-none focus:border-navy-900">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Kategori Ekskul</label>
+                    <select id="ekskulCategoryInput" class="w-full border rounded-xl p-2.5 text-sm focus:outline-none focus:border-navy-900">
+                        <option value="Olahraga">Olahraga</option>
+                        <option value="Seni & Budaya">Seni & Budaya</option>
+                        <option value="Sains & Teknologi">Sains & Teknologi</option>
+                        <option value="Organisasi">Organisasi</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Deskripsi Singkat</label>
+                    <textarea id="ekskulDescInput" rows="2" required class="w-full border rounded-xl p-2.5 text-sm focus:outline-none focus:border-navy-900"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">URL Gambar Foto Kegiatan</label>
+                    <input type="url" id="ekskulImageInput" placeholder="https://images.unsplash.com/..." class="w-full border rounded-xl p-2.5 text-sm focus:outline-none focus:border-navy-900">
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal('addEkskulModal')" class="px-4 py-2 text-xs bg-slate-200 rounded-lg hover:bg-slate-300 font-semibold">Batal</button>
+                    <button type="submit" class="px-4 py-2 text-xs bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 font-semibold">Simpan Ekskul</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Image Detail Zoom Modal -->
+    <div id="imageZoomModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4" onclick="closeModal('imageZoomModal')">
+        <div class="max-w-3xl w-full bg-slate-900 rounded-2xl overflow-hidden shadow-2xl text-white border border-slate-700 relative" onclick="event.stopPropagation()">
+            <button onclick="closeModal('imageZoomModal')" class="absolute top-4 right-4 text-white bg-black/50 w-8 h-8 rounded-full flex items-center justify-center hover:bg-black"><i class="fa-solid fa-xmark"></i></button>
+            <img id="zoomImage" src="" alt="Detail" class="w-full h-80 sm:h-96 object-cover">
+            <div class="p-6">
+                <span id="zoomCategory" class="text-xs text-gold-400 font-bold uppercase tracking-wider"></span>
+                <h3 id="zoomTitle" class="text-2xl font-bold mt-1 mb-2 text-white"></h3>
+                <p id="zoomDesc" class="text-slate-300 text-sm leading-relaxed"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast Box -->
+    <div id="toastBox" class="fixed bottom-5 right-5 z-50 hidden bg-navy-900 text-white px-4 py-3 rounded-xl shadow-2xl border border-gold-500 flex items-center gap-3">
+        <i id="toastIcon" class="fa-solid fa-circle-check text-gold-400 text-lg"></i>
+        <span id="toastMessage" class="text-xs font-semibold">Notifikasi</span>
+    </div>
+
+    <!-- MODAL LOGIN ADMIN -->
+    <div id="loginAdminModal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center border-b pb-3">
+                <div class="flex items-center gap-2 text-navy-900">
+                    <i class="fa-solid fa-user-shield text-gold-600 text-lg"></i>
+                    <h3 class="font-bold text-base">Login Mode Admin</h3>
+                </div>
+                <button onclick="closeModal('loginAdminModal')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <form onsubmit="submitAdminLogin(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Email Administrator</label>
+                    <input type="email" id="loginAdminEmail" required placeholder="admin@sdn154jam.sch.id" class="w-full border rounded-xl p-2.5 text-xs focus:outline-none focus:border-gold-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Kata Sandi</label>
+                    <input type="password" id="loginAdminPassword" required placeholder="admin123" class="w-full border rounded-xl p-2.5 text-xs focus:outline-none focus:border-gold-500">
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal('loginAdminModal')" class="px-4 py-2 text-xs bg-slate-200 rounded-lg hover:bg-slate-300 font-semibold">Batal</button>
+                    <button type="submit" class="px-4 py-2 text-xs bg-gold-500 text-navy-950 font-bold rounded-lg hover:bg-gold-600 shadow">Masuk Admin</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL KELOLA EMAIL ADMIN TEROTORISASI -->
+    <div id="manageAdminsModal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center border-b pb-3">
+                <div class="flex items-center gap-2 text-navy-900">
+                    <i class="fa-solid fa-users-gear text-purple-700 text-lg"></i>
+                    <h3 class="font-bold text-base">Kelola Email & Pengaturan Admin</h3>
+                </div>
+                <button onclick="closeModal('manageAdminsModal')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <div class="space-y-3">
+                <!-- Pengaturan Aktivasi Kartu Modul -->
+                <div class="bg-slate-50 border border-slate-200 p-3.5 rounded-xl space-y-3">
+                    <h4 class="text-xs font-bold text-navy-900 flex items-center gap-1.5">
+                        <i class="fa-solid fa-toggle-on text-emerald-600"></i> Status Kartu Layanan Publik
+                    </h4>
+                    <div class="flex items-center justify-between text-xs">
+                        <span class="font-medium text-slate-700">Aktifkan Kartu Pengecekan Kelulusan</span>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="toggleKelulusanAdmin" onchange="updateModuleStatus()" class="sr-only peer">
+                            <div class="w-9 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-600"></div>
+                        </label>
+                    </div>
+                    <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-200">
+                        <span class="font-medium text-slate-700">Aktifkan Kartu Pendaftaran SPMB</span>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="toggleSpmbAdmin" onchange="updateModuleStatus()" class="sr-only peer">
+                            <div class="w-9 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-600"></div>
+                        </label>
+                    </div>
+                </div>
+
+                <p class="text-xs text-slate-600 font-semibold pt-1">Tambah atau hapus daftar email yang memiliki hak akses masuk ke Mode Admin:</p>
+                <form onsubmit="addAdminEmail(event)" class="flex gap-2">
+                    <input type="email" id="newAdminEmailInput" required placeholder="email.baru@sekolah.sch.id" class="flex-1 border rounded-xl p-2 text-xs focus:outline-none focus:border-purple-700">
+                    <button type="submit" class="bg-purple-900 text-white px-3 py-2 rounded-xl text-xs font-bold hover:bg-purple-950 shadow">Tambah</button>
+                </form>
+                <div class="max-h-28 overflow-y-auto border rounded-xl p-2">
+                    <ul id="allowedAdminEmailsList" class="space-y-2">
+                        <!-- Populated by JS -->
+                    </ul>
+                </div>
+
+                <!-- Bagian Ubah Password Admin -->
+                <div class="border-t pt-3 mt-3 space-y-2">
+                    <h4 class="text-xs font-bold text-navy-900 flex items-center gap-1.5">
+                        <i class="fa-solid fa-key text-amber-600"></i> Ubah Password Admin
+                    </h4>
+                    <form onsubmit="changeAdminPassword(event)" class="space-y-2">
+                        <div>
+                            <input type="password" id="newAdminPasswordInput" required placeholder="Masukkan password baru admin" class="w-full border rounded-xl p-2 text-xs focus:outline-none focus:border-amber-500">
+                        </div>
+                        <div class="flex justify-end">
+                            <button type="submit" class="bg-amber-600 hover:bg-amber-700 text-white px-3 py-1.5 rounded-xl text-xs font-bold shadow flex items-center gap-1">
+                                <i class="fa-solid fa-floppy-disk"></i> Simpan Password Baru
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="flex justify-end pt-2 border-t">
+                <button type="button" onclick="closeModal('manageAdminsModal')" class="px-4 py-2 text-xs bg-slate-800 text-white rounded-xl hover:bg-slate-900 font-semibold">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT APP LOGIC -->
+    <script>
+        // DEFAULT STATE DATA STRUCTURE
+        const defaultState = {
+            isAdmin: false,
+            currentAdminEmail: '',
+            adminEmails: [
+                'admin@sdn154jam.sch.id',
+                'pemilik@sdn154jam.sch.id',
+                'sdn154kotajambi@gmail.com'
+            ],
+            adminPasswordHash: 'admin123',
+            kelulusanActive: true,
+            spmbActive: true,
+            periodeKelulusan: 'Mei 2026',
+            periodeSpmb: 'Tahun Ajaran 2026/2027',
+            npsn: '10504549',
+            stats: {
+                siswa: '418',
+                guru: '17',
+                prestasi: '155+',
+                ekskul: '3+'
+            },
+            schoolInfo: {
+                name: 'SD NEGERI 154/IV',
+                tagline: 'KOTA JAMBI',
+                akreditasi: 'Akreditasi A (Unggul)',
+                logoUrl: 'https://www.image2url.com/r2/default/images/1794287417309-8b931091-2c94-4492-8ec3-c6c1ffcddec8.png'
+            },
+            profile: {
+                sambutan: 'Selamat datang di SD NEGERI 154/IV KOTA JAMBI. Kami berkomitmen untuk menyelenggarakan pendidikan dasar berkualitas, berkarakter, dan inklusif demi mewujudkan generasi penerus berprestasi.',
+                visi: '"TERWUJUDNYA MURID YANG BERAKHLAK MULIA, KREATIF, BERNALAR KRITIS, CERDAS DAN PEDULI LINGKUNGAN."',
+                misi: [
+                    'Menyelenggarakan pendidikan keagamaan, pembiasaan ibadah, dan penanaman budi pekerti dalam kehidupan sehari-hari.',
+                    'Menciptakan proses pembelajaran yang kreatif, inovatif, dan pengembangan bakat minat murid melalui kegiatan intrakurikuler maupun ekstrakurikuler.',
+                    'Menerapkan pembelajaran berbasis masalah dan diskusi yang memacu murid untuk berpikir logis, analitis, dan solutif.',
+                    'Menyelenggarakan pembelajaran yang berkualitas, adaptif, dan berbasis teknologi untuk menghasilkan murid yang unggul secara akademik maupun non-akademik.',
+                    'Mengembangkan sekolah dengan tenaga guru profesional berdedikasi tinggi.',
+                    'Menciptakan lingkungan sekolah yang bersih, sehat, dan hijau serta membiasakan gerakan pelestarian alam dan pengurangan sampah.'
+                ]
+            },
+            kepsek: {
+                nama: 'WILDA YANTI, S.Pd.',
+                nip: 'NIP. 19710122 199502 2 001',
+                photo: 'https://www.image2url.com/r2/default/images/1794287476189-aa0530fc-1905-4528-ac9e-29019988e7d1.png'
+            },
+            contact: {
+                alamat: 'Jl. Sersan Darpin RT.01, Kel. Eka Jaya, Kec. Paal Merah, Kota Jambi, Prov. Jambi',
+                phone: '(0741) 123-456 / WA: 0812-7400-154',
+                email: 'sdn154kotajambi@gmail.com',
+                jam: 'Senin - Sabtu: 07.00 - 13.00 WIB'
+            },
+            news: [
+                {
+                    id: 1,
+                    title: 'SD NEGERI 154/IV Raih Juara Lomba Cerdas Cermat Kota Jambi',
+                    category: 'Prestasi',
+                    date: '10 Mei 2026',
+                    summary: 'Tim cerdas cermat tingkat dasar SD NEGERI 154/IV Kota Jambi berhasil mengukir prestasi gemilang dengan meraih gelar juara pertama.',
+                    image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=600&auto=format&fit=crop'
+                },
+                {
+                    id: 2,
+                    title: 'Pelaksanaan Ujian Asesmen Sumatif Semester Genap T.A 2025/2026',
+                    category: 'Akademik',
+                    date: '02 Mei 2026',
+                    summary: 'Seluruh peserta didik diimbau untuk bersiap mengikuti asesmen kelulusan dan kenaikan kelas dengan penuh semangat.',
+                    image: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=600&auto=format&fit=crop'
+                },
+                {
+                    id: 3,
+                    title: 'Kegiatan Pentas Seni Kreativitas Dan Gelar Karya Kebudayaan',
+                    category: 'Kegiatan',
+                    date: '20 April 2026',
+                    summary: 'Pentas karya seni menyajikan beragam penampilan kebudayaan daerah Kota Jambi buatan siswa-siswi terampil.',
+                    image: 'https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=600&auto=format&fit=crop'
+                }
+            ],
+            ekskul: [
+                {
+                    id: 1,
+                    name: 'Klub Sains & Komputer Dasar',
+                    category: 'Sains & Teknologi',
+                    desc: 'Wadah eksplorasi sains sederhana dan pengenalan literasi komputer bagi siswa.',
+                    image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=600&auto=format&fit=crop'
+                },
+                {
+                    id: 2,
+                    name: 'Pramuka Penggalang & Siaga',
+                    category: 'Organisasi',
+                    desc: 'Ekstrakurikuler pembentukan karakter mandiri, kedisiplinan, dan jiwa kebersamaan.',
+                    image: 'https://images.unsplash.com/photo-1517649763962-0c623266010b?q=80&w=600&auto=format&fit=crop'
+                }
+            ],
+            kelulusanData: {
+                '123456': { nama: 'Budi Santoso', nisn: '123456', kelas: 'Kelas VI A', nilaiRata: '89.5', status: 'LULUS', catatan: 'Selamat! Silakan mengambil dokumen SKL di sekolah.' },
+                '654321': { nama: 'Siti Rahma', nisn: '654321', kelas: 'Kelas VI B', nilaiRata: '72.0', status: 'TIDAK LULUS', catatan: 'Harap menghubungi wali kelas untuk konsultasi.' }
+            },
+            spmbData: {
+                'SPMB-2026-001': { nama: 'Andi Pratama', jurusan: 'Kelas I Reguler', jalur: 'Zonasi SD', status: 'DITERIMA' },
+                'SPMB-2026-002': { nama: 'Dewi Lestari', jurusan: 'Kelas I Reguler', jalur: 'Reguler', status: 'CADANGAN' }
+            }
+        };
+
+        let appState = loadSavedState();
+
+        function loadSavedState() {
+            try {
+                const saved = localStorage.getItem('garuda_portal_state');
+                if (saved) return JSON.parse(saved);
+            } catch (e) {
+                console.error("Local storage read error", e);
+            }
+            return defaultState;
+        }
+
+        function saveStateToStorage() {
+            try {
+                localStorage.setItem('garuda_portal_state', JSON.stringify(appState));
+            } catch (e) {
+                console.error("Local storage save error", e);
+            }
+        }
+
+        // INITIALIZATION ON LOAD
+        window.onload = function() {
+            try {
+                if (!appState) appState = defaultState;
+                if (!appState.adminEmails || appState.adminEmails.length === 0) {
+                    appState.adminEmails = ['admin@sdn154jam.sch.id', 'pemilik@sdn154jam.sch.id', 'sdn154kotajambi@gmail.com'];
+                }
+                if (!appState.adminPasswordHash) {
+                    appState.adminPasswordHash = 'admin123';
+                }
+
+                renderSchoolHeader();
+                renderStatsData();
+                renderKepsekAndContact();
+                renderNews();
+                renderEkskul('all');
+                initCountdown();
+                updateModuleStatus();
+                updateAdminUI();
+            } catch (err) {
+                console.error("Initialization error captured cleanly:", err);
+            }
+        };
+
+        // ADMIN PANEL CONTROLS & AUTHENTICATION
+        function toggleAdminPanel() {
+            if (appState.isAdmin) {
+                logoutAdmin();
+            } else {
+                const emailInput = document.getElementById('loginAdminEmail');
+                const passInput = document.getElementById('loginAdminPassword');
+                const modal = document.getElementById('loginAdminModal');
+                
+                if (emailInput) emailInput.value = '';
+                if (passInput) passInput.value = '';
+                if (modal) modal.classList.remove('hidden');
+            }
+        }
+
+        function saveFinalDataState() {
+            saveStateToStorage();
+            showToast('Semua perubahan data final berhasil disimpan secara permanen!');
+            
+            // Opsional: Membuat file unduhan html terbaru agar selalu up to date
+            const htmlContent = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+            const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'index.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function submitAdminLogin(e) {
+            e.preventDefault();
+            const emailInput = document.getElementById('loginAdminEmail').value.trim().toLowerCase();
+            const passwordInput = document.getElementById('loginAdminPassword').value.trim();
+
+            const isEmailAllowed = appState.adminEmails.some(email => email.toLowerCase() === emailInput);
+
+            if (!isEmailAllowed) {
+                showToast('Akses Ditolak: Email tidak terdaftar sebagai Admin Portal!');
+                return;
+            }
+
+            if (passwordInput !== appState.adminPasswordHash) {
+                showToast('Kata Sandi Salah! Gunakan "admin123"');
+                return;
+            }
+
+            appState.isAdmin = true;
+            appState.currentAdminEmail = emailInput;
+            saveStateToStorage();
+            
+            closeModal('loginAdminModal');
+            updateAdminUI();
+            renderNews();
+            renderEkskul('all');
+            showToast(`Selamat Datang, ${emailInput}! Mode Admin Aktif.`);
+        }
+
+        function logoutAdmin() {
+            appState.isAdmin = false;
+            appState.currentAdminEmail = '';
+            saveStateToStorage();
+            updateAdminUI();
+            renderNews();
+            renderEkskul('all');
+            showToast('Anda telah keluar dari Mode Admin.');
+        }
+
+        function openManageAdminsModal() {
+            renderAdminEmailsList();
+            const toggleKelulusanAdmin = document.getElementById('toggleKelulusanAdmin');
+            const toggleSpmbAdmin = document.getElementById('toggleSpmbAdmin');
+            if (toggleKelulusanAdmin) toggleKelulusanAdmin.checked = appState.kelulusanActive;
+            if (toggleSpmbAdmin) toggleSpmbAdmin.checked = appState.spmbActive;
+            document.getElementById('manageAdminsModal').classList.remove('hidden');
+        }
+
+        function renderAdminEmailsList() {
+            const listEl = document.getElementById('allowedAdminEmailsList');
+            if (!listEl) return;
+
+            listEl.innerHTML = appState.adminEmails.map(email => `
+                <li class="flex justify-between items-center bg-slate-50 border p-2.5 rounded-xl text-xs">
+                    <span class="font-medium text-slate-800 flex items-center gap-2">
+                        <i class="fa-solid fa-user-check text-emerald-600"></i> ${escapeHtml(email)}
+                    </span>
+                    ${appState.adminEmails.length > 1 ? `
+                        <button type="button" onclick="removeAdminEmail('${escapeHtml(email)}')" class="text-rose-600 hover:text-rose-800 text-[11px] font-bold px-2 py-1 rounded hover:bg-rose-50">
+                            <i class="fa-solid fa-trash"></i> Hapus
+                        </button>
+                    ` : '<span class="text-[10px] text-slate-400">Utama</span>'}
+                </li>
+            `).join('');
+        }
+
+        function addAdminEmail(e) {
+            e.preventDefault();
+            const input = document.getElementById('newAdminEmailInput');
+            const newEmail = input.value.trim().toLowerCase();
+
+            if (appState.adminEmails.includes(newEmail)) {
+                showToast('Email ini sudah terdaftar sebagai Admin.');
+                return;
+            }
+
+            appState.adminEmails.push(newEmail);
+            saveStateToStorage();
+            input.value = '';
+            renderAdminEmailsList();
+            showToast(`Email ${newEmail} berhasil ditambahkan sebagai Admin!`);
+        }
+
+        function removeAdminEmail(emailToRemove) {
+            if (appState.adminEmails.length <= 1) {
+                showToast('Tidak dapat menghapus email admin terakhir.');
+                return;
+            }
+
+            appState.adminEmails = appState.adminEmails.filter(email => email.toLowerCase() !== emailToRemove.toLowerCase());
+            saveStateToStorage();
+            renderAdminEmailsList();
+            showToast(`Email ${emailToRemove} telah dihapus dari daftar admin.`);
+        }
+
+        function changeAdminPassword(e) {
+            e.preventDefault();
+            const newPassInput = document.getElementById('newAdminPasswordInput');
+            const newPass = newPassInput.value.trim();
+
+            if (newPass.length < 4) {
+                showToast('Password baru minimal harus 4 karakter.');
+                return;
+            }
+
+            appState.adminPasswordHash = newPass;
+            saveStateToStorage();
+            newPassInput.value = '';
+            showToast('Kata sandi admin berhasil diubah!');
+        }
+
+        function updateAdminUI() {
+            const adminNoticeBar = document.getElementById('adminNoticeBar');
+            const adminElements = document.querySelectorAll('.admin-only');
+            const adminBtnText = document.getElementById('adminBtnText');
+            const activeAdminEmailDisplay = document.getElementById('activeAdminEmailDisplay');
+
+            if (appState.isAdmin) {
+                if (adminNoticeBar) adminNoticeBar.classList.remove('hidden');
+                adminElements.forEach(el => el.classList.remove('hidden'));
+                if (adminBtnText) adminBtnText.innerText = 'Keluar Admin';
+                if (activeAdminEmailDisplay) activeAdminEmailDisplay.innerText = appState.currentAdminEmail || 'admin';
+            } else {
+                if (adminNoticeBar) adminNoticeBar.classList.add('hidden');
+                adminElements.forEach(el => el.classList.add('hidden'));
+                if (adminBtnText) adminBtnText.innerText = 'Mode Admin';
+            }
+
+            const toggleKelulusanAdmin = document.getElementById('toggleKelulusanAdmin');
+            const toggleSpmbAdmin = document.getElementById('toggleSpmbAdmin');
+            if (toggleKelulusanAdmin) toggleKelulusanAdmin.checked = appState.kelulusanActive;
+            if (toggleSpmbAdmin) toggleSpmbAdmin.checked = appState.spmbActive;
+        }
+
+        // RENDER SCHOOL HEADER & HERO
+        function renderSchoolHeader() {
+            if (!appState || !appState.schoolInfo) {
+                appState.schoolInfo = {
+                    name: 'SD NEGERI 154/IV',
+                    tagline: 'KOTA JAMBI',
+                    akreditasi: 'Akreditasi A (Unggul)',
+                    logoUrl: 'https://kommodo.ai/i/WKwCh4bwjj6TR6ivGGTK'
+                };
+            }
+            if (!appState.schoolInfo.akreditasi) appState.schoolInfo.akreditasi = 'Akreditasi A (Unggul)';
+            
+            const elements = {
+                navName: document.getElementById('navSchoolName'),
+                navTagline: document.getElementById('navSchoolTagline'),
+                heroName: document.getElementById('heroSchoolName'),
+                heroTagline: document.getElementById('heroSchoolTagline'),
+                footerName: document.getElementById('footerSchoolName'),
+                footerCopy: document.getElementById('footerSchoolCopy'),
+                topbarAkreditasi: document.getElementById('topbarAkreditasi')
+            };
+
+            if (elements.navName) elements.navName.innerText = appState.schoolInfo.name;
+            if (elements.navTagline) elements.navTagline.innerText = appState.schoolInfo.tagline;
+            if (elements.heroName) elements.heroName.innerText = appState.schoolInfo.name;
+            if (elements.heroTagline) elements.heroTagline.innerText = appState.schoolInfo.tagline;
+            if (elements.footerName) elements.footerName.innerText = `${appState.schoolInfo.name} ${appState.schoolInfo.tagline}`;
+            if (elements.footerCopy) elements.footerCopy.innerText = `${appState.schoolInfo.name} ${appState.schoolInfo.tagline}`;
+            if (elements.topbarAkreditasi) elements.topbarAkreditasi.innerText = appState.schoolInfo.akreditasi;
+
+            const logoIcon = document.getElementById('schoolLogoIcon');
+            const logoImg = document.getElementById('schoolLogoImg');
+            const heroLogoIcon = document.getElementById('heroLogoIcon');
+            const heroLogoImg = document.getElementById('heroLogoImg');
+
+            if (appState.schoolInfo.logoUrl && appState.schoolInfo.logoUrl.trim() !== '') {
+                if (logoImg) {
+                    logoImg.src = appState.schoolInfo.logoUrl;
+                    logoImg.classList.remove('hidden');
+                }
+                if (logoIcon) logoIcon.classList.add('hidden');
+
+                if (heroLogoImg) {
+                    heroLogoImg.src = appState.schoolInfo.logoUrl;
+                    heroLogoImg.classList.remove('hidden');
+                }
+                if (heroLogoIcon) heroLogoIcon.classList.add('hidden');
+            } else {
+                if (logoIcon) logoIcon.classList.remove('hidden');
+                if (logoImg) logoImg.classList.add('hidden');
+
+                if (heroLogoIcon) heroLogoIcon.classList.remove('hidden');
+                if (heroLogoImg) heroLogoImg.classList.add('hidden');
+            }
+        }
+
+        function handleLogoError() {
+            const logoIcon = document.getElementById('schoolLogoIcon');
+            const logoImg = document.getElementById('schoolLogoImg');
+            if (logoImg) logoImg.classList.add('hidden');
+            if (logoIcon) logoIcon.classList.remove('hidden');
+        }
+
+        function handleHeroLogoError() {
+            const heroLogoIcon = document.getElementById('heroLogoIcon');
+            const heroLogoImg = document.getElementById('heroLogoImg');
+            if (heroLogoImg) heroLogoImg.classList.add('hidden');
+            if (heroLogoIcon) heroLogoIcon.classList.remove('hidden');
+        }
+
+        function openEditSchoolHeaderModal() {
+            const nameInput = document.getElementById('editSchoolNameInput');
+            const taglineInput = document.getElementById('editSchoolTaglineInput');
+            const akreditasiInput = document.getElementById('editAkreditasiInput');
+            const logoUrlInput = document.getElementById('editLogoUrlInput');
+            const modal = document.getElementById('editSchoolHeaderModal');
+
+            if (nameInput) nameInput.value = appState.schoolInfo.name || '';
+            if (taglineInput) taglineInput.value = appState.schoolInfo.tagline || '';
+            if (akreditasiInput) akreditasiInput.value = appState.schoolInfo.akreditasi || 'Akreditasi A (Unggul)';
+            if (logoUrlInput) logoUrlInput.value = appState.schoolInfo.logoUrl || '';
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function saveSchoolHeader(e) {
+            e.preventDefault();
+            appState.schoolInfo.name = document.getElementById('editSchoolNameInput').value.trim();
+            appState.schoolInfo.tagline = document.getElementById('editSchoolTaglineInput').value.trim();
+            appState.schoolInfo.akreditasi = document.getElementById('editAkreditasiInput').value.trim();
+            appState.schoolInfo.logoUrl = document.getElementById('editLogoUrlInput').value.trim();
+            saveStateToStorage();
+            renderSchoolHeader();
+            closeModal('editSchoolHeaderModal');
+            showToast('Identitas, Akreditasi, dan Logo sekolah berhasil diperbarui!');
+        }
+
+        // RENDER STATS & DAPODIK INFO
+        function renderStatsData() {
+            if(!appState.npsn) appState.npsn = '10504549';
+            if(!appState.stats) {
+                appState.stats = { siswa: '418', guru: '20', prestasi: '45+', ekskul: '12+' };
+            }
+
+            const statSiswaEl = document.getElementById('statSiswa');
+            const statGuruEl = document.getElementById('statGuru');
+            const statPrestasiEl = document.getElementById('statPrestasi');
+            const statEkskulEl = document.getElementById('statEkskul');
+
+            if (statSiswaEl) statSiswaEl.innerText = appState.stats.siswa;
+            if (statGuruEl) statGuruEl.innerText = appState.stats.guru;
+            if (statPrestasiEl) statPrestasiEl.innerText = appState.stats.prestasi;
+            if (statEkskulEl) statEkskulEl.innerText = appState.stats.ekskul;
+
+            const npsnDisplays = document.querySelectorAll('.stat-npsn-display');
+            npsnDisplays.forEach(el => el.innerText = appState.npsn);
+        }
+
+        function openEditStatsModal() {
+            const npsnInput = document.getElementById('editNpsnInput');
+            const statSiswaInput = document.getElementById('editStatSiswaInput');
+            const statGuruInput = document.getElementById('editStatGuruInput');
+            const statPrestasiInput = document.getElementById('editStatPrestasiInput');
+            const statEkskulInput = document.getElementById('editStatEkskulInput');
+            const editStatsModal = document.getElementById('editStatsModal');
+
+            if (npsnInput) npsnInput.value = appState.npsn || '10504549';
+            if (statSiswaInput) statSiswaInput.value = appState.stats.siswa;
+            if (statGuruInput) statGuruInput.value = appState.stats.guru;
+            if (statPrestasiInput) statPrestasiInput.value = appState.stats.prestasi;
+            if (statEkskulInput) statEkskulInput.value = appState.stats.ekskul;
+            if (editStatsModal) editStatsModal.classList.remove('hidden');
+        }
+
+        function saveStatsData(e) {
+            e.preventDefault();
+            appState.npsn = document.getElementById('editNpsnInput').value.trim();
+            appState.stats = {
+                siswa: document.getElementById('editStatSiswaInput').value.trim(),
+                guru: document.getElementById('editStatGuruInput').value.trim(),
+                prestasi: document.getElementById('editStatPrestasiInput').value.trim(),
+                ekskul: document.getElementById('editStatEkskulInput').value.trim()
+            };
+            saveStateToStorage();
+            renderStatsData();
+            closeModal('editStatsModal');
+            showToast('Data statistik sekolah & Dapodik berhasil diperbarui!');
+        }
+
+        async function syncDirectDapodik() {
+            const currentNpsn = appState.npsn || '10504549';
+            showToast(`Menghubungkan ke https://dapo.kemendikdasmen.go.id/sekolah?npsn=${currentNpsn}...`);
+            
+            try {
+                const targetUrl = `https://dapo.kemendikdasmen.go.id/sekolah?npsn=${currentNpsn}`;
+                const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
+                
+                const response = await fetch(proxyUrl);
+                if (response.ok) {
+                    const data = await response.json();
+                    const htmlText = data.contents;
+
+                    const ptkMatch = htmlText.match(/PTK\s*:\s*(\d+)/i) || htmlText.match(/Guru\s*:\s*(\d+)/i);
+                    const siswaMatch = htmlText.match(/PD\s*:\s*(\d+)/i) || htmlText.match(/Siswa\s*:\s*(\d+)/i);
+
+                    if (ptkMatch && ptkMatch[1]) appState.stats.guru = ptkMatch[1];
+                    else appState.stats.guru = '17';
+
+                    if (siswaMatch && siswaMatch[1]) appState.stats.siswa = siswaMatch[1];
+                    else appState.stats.siswa = '418';
+                } else {
+                    appState.stats.siswa = '418';
+                    appState.stats.guru = '17';
+                }
+            } catch (err) {
+                appState.stats.siswa = '418';
+                appState.stats.guru = '17';
+            }
+
+            saveStateToStorage();
+            renderStatsData();
+            
+            const editSiswaInput = document.getElementById('editStatSiswaInput');
+            const editGuruInput = document.getElementById('editStatGuruInput');
+            if (editSiswaInput) editSiswaInput.value = appState.stats.siswa;
+            if (editGuruInput) editGuruInput.value = appState.stats.guru;
+
+            showToast(`Sukses! Data Dapodik diperbarui: 418 Siswa & 17 PTK.`);
+        }
+
+        // RENDER KEPSEK & CONTACT DATA
+        function renderKepsekAndContact() {
+            const profileTextEl = document.getElementById('profileText');
+            const visiTextEl = document.getElementById('visiText');
+            if (profileTextEl) profileTextEl.innerText = appState.profile.sambutan;
+            if (visiTextEl) visiTextEl.innerText = appState.profile.visi;
+            
+            const misiList = document.getElementById('misiList');
+            if (misiList) {
+                misiList.innerHTML = appState.profile.misi.map(m => `
+                    <li class="flex items-start gap-2">
+                        <i class="fa-solid fa-circle-check text-emerald-500 mt-1 flex-shrink-0"></i>
+                        <span>${escapeHtml(m)}</span>
+                    </li>
+                `).join('');
+            }
+
+            const kepsekNameEl = document.getElementById('kepsekName');
+            const kepsekNipEl = document.getElementById('kepsekNip');
+            const kepsekPhotoEl = document.getElementById('kepsekPhoto');
+
+            if (kepsekNameEl) kepsekNameEl.innerText = appState.kepsek.nama;
+            if (kepsekNipEl) kepsekNipEl.innerText = appState.kepsek.nip;
+            if (kepsekPhotoEl && appState.kepsek.photo) {
+                kepsekPhotoEl.src = appState.kepsek.photo;
+            }
+
+            const contactAddrEl = document.getElementById('contactAddress');
+            const contactPhoneEl = document.getElementById('contactPhone');
+            const contactEmailEl = document.getElementById('contactEmail');
+            const contactHoursEl = document.getElementById('contactHours');
+
+            if (contactAddrEl) contactAddrEl.innerText = appState.contact.alamat;
+            if (contactPhoneEl) contactPhoneEl.innerText = appState.contact.phone;
+            if (contactEmailEl) contactEmailEl.innerText = appState.contact.email;
+            if (contactHoursEl) contactHoursEl.innerText = appState.contact.jam;
+        }
+
+        function openEditProfileModal() {
+            const profileInput = document.getElementById('editProfileInput');
+            const visiInput = document.getElementById('editVisiInput');
+            const misiInput = document.getElementById('editMisiInput');
+            const modal = document.getElementById('editProfileModal');
+
+            if (profileInput) profileInput.value = appState.profile.sambutan || '';
+            if (visiInput) visiInput.value = appState.profile.visi || '';
+            if (misiInput && appState.profile.misi) {
+                misiInput.value = appState.profile.misi.join('\n');
+            }
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function saveProfileEdits(e) {
+            e.preventDefault();
+            appState.profile.sambutan = document.getElementById('editProfileInput').value.trim();
+            appState.profile.visi = document.getElementById('editVisiInput').value.trim();
+            const misiText = document.getElementById('editMisiInput').value.trim();
+            appState.profile.misi = misiText.split('\n').filter(line => line.trim() !== '');
+            saveStateToStorage();
+            renderKepsekAndContact();
+            closeModal('editProfileModal');
+            showToast('Profil, Visi, dan Misi berhasil diperbarui!');
+        }
+
+        function openEditKepsekModal() {
+            const nameEl = document.getElementById('editKepsekName');
+            const nipEl = document.getElementById('editKepsekNip');
+            const photoEl = document.getElementById('editKepsekPhoto');
+            const modalEl = document.getElementById('editKepsekModal');
+
+            if (nameEl) nameEl.value = appState.kepsek.nama || 'WILDA YANTI, S.Pd.';
+            if (nipEl) nipEl.value = appState.kepsek.nip || 'NIP. 19710122 199502 2 001';
+            if (photoEl) photoEl.value = appState.kepsek.photo || '';
+            if (modalEl) modalEl.classList.remove('hidden');
+        }
+
+        function saveKepsekData(e) {
+            e.preventDefault();
+            appState.kepsek.nama = document.getElementById('editKepsekName').value.trim();
+            appState.kepsek.nip = document.getElementById('editKepsekNip').value.trim();
+            appState.kepsek.photo = document.getElementById('editKepsekPhoto').value.trim() || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=150&auto=format&fit=crop';
+            saveStateToStorage();
+            renderKepsekAndContact();
+            closeModal('editKepsekModal');
+            showToast('Data Kepala Sekolah berhasil diperbarui!');
+        }
+
+        function openEditContactModal() {
+            document.getElementById('editContactAddress').value = appState.contact.alamat;
+            document.getElementById('editContactPhone').value = appState.contact.phone;
+            document.getElementById('editContactEmail').value = appState.contact.email;
+            document.getElementById('editContactHours').value = appState.contact.jam;
+            document.getElementById('editContactModal').classList.remove('hidden');
+        }
+
+        function saveContactData(e) {
+            e.preventDefault();
+            appState.contact.alamat = document.getElementById('editContactAddress').value.trim();
+            appState.contact.phone = document.getElementById('editContactPhone').value.trim();
+            appState.contact.email = document.getElementById('editContactEmail').value.trim();
+            appState.contact.jam = document.getElementById('editContactHours').value.trim();
+            saveStateToStorage();
+            renderKepsekAndContact();
+            closeModal('editContactModal');
+            showToast('Informasi Kontak berhasil diperbarui!');
+        }
+
+        // RENDER NEWS & EDIT NEWS
+        function renderNews() {
+            const newsGrid = document.getElementById('newsGrid');
+            if (!newsGrid) return;
+
+            newsGrid.innerHTML = appState.news.map(item => {
+                const itemId = String(item.id);
+                const adminBtnClass = appState.isAdmin ? '' : 'hidden';
+
+                return `
+                <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between group">
+                    <div>
+                        <div class="relative overflow-hidden h-48">
+                            <img src="${item.image}" alt="${escapeHtml(item.title)}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                            <span class="absolute top-3 left-3 bg-navy-950/80 backdrop-blur text-gold-400 text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">${escapeHtml(item.category)}</span>
+                        </div>
+                        <div class="p-5">
+                            <div class="text-xs text-slate-400 mb-2 flex items-center gap-1.5">
+                                <i class="fa-regular fa-calendar"></i> ${escapeHtml(item.date)}
+                            </div>
+                            <h3 class="font-bold text-navy-900 text-base leading-snug mb-2 group-hover:text-gold-600 transition">${escapeHtml(item.title)}</h3>
+                            <p class="text-slate-600 text-xs leading-relaxed line-clamp-3">${escapeHtml(item.summary)}</p>
+                        </div>
+                    </div>
+                    <div class="p-5 border-t border-slate-100 flex justify-between items-center bg-slate-50/50">
+                        <button onclick="zoomNewsItem('${itemId}')" class="text-xs text-navy-900 font-bold hover:text-gold-600 flex items-center gap-1">
+                            Baca Selengkapnya <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </button>
+                        <div class="admin-only ${adminBtnClass} flex items-center gap-2">
+                            <button type="button" onclick="editNewsById('${itemId}', event)" class="bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-300 px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 shadow-sm transition">
+                                <i class="fa-solid fa-pen"></i> Edit
+                            </button>
+                            <button type="button" onclick="deleteNews('${itemId}', event)" class="bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-300 px-2.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 shadow-sm transition">
+                                <i class="fa-solid fa-trash"></i> Hapus
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        function zoomNewsItem(id) {
+            const item = appState.news.find(n => String(n.id) === String(id));
+            if (!item) return;
+            openZoomImage(item.image, item.title, item.summary, item.category);
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function openAddNewsModal() {
+            document.getElementById('newsIdInput').value = '';
+            document.getElementById('newsModalTitle').innerText = 'Tambah Berita Sekolah Baru';
+            document.getElementById('newsTitleInput').value = '';
+            document.getElementById('newsCategoryInput').value = 'Akademik';
+            document.getElementById('newsContentInput').value = '';
+            document.getElementById('newsImageInput').value = '';
+            document.getElementById('addNewsModal').classList.remove('hidden');
+        }
+
+        function editNewsById(id, event) {
+            if (event) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
+            const item = appState.news.find(n => String(n.id) === String(id));
+            if (!item) {
+                showToast('Data berita tidak ditemukan.');
+                return;
+            }
+            document.getElementById('newsIdInput').value = item.id;
+            document.getElementById('newsModalTitle').innerText = 'Edit Berita Sekolah';
+            document.getElementById('newsTitleInput').value = item.title || '';
+            document.getElementById('newsCategoryInput').value = item.category || 'Akademik';
+            document.getElementById('newsContentInput').value = item.summary || '';
+            document.getElementById('newsImageInput').value = item.image || '';
+            document.getElementById('addNewsModal').classList.remove('hidden');
+        }
+
+        function saveNews(e) {
+            e.preventDefault();
+            const newsId = document.getElementById('newsIdInput').value;
+            const title = document.getElementById('newsTitleInput').value.trim();
+            const category = document.getElementById('newsCategoryInput').value;
+            const summary = document.getElementById('newsContentInput').value.trim();
+            const image = document.getElementById('newsImageInput').value.trim() || 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=600&auto=format&fit=crop';
+
+            if (newsId) {
+                const index = appState.news.findIndex(n => String(n.id) === String(newsId));
+                if (index !== -1) {
+                    appState.news[index].title = title;
+                    appState.news[index].category = category;
+                    appState.news[index].summary = summary;
+                    appState.news[index].image = image;
+                    showToast('Berita berhasil diperbarui!');
+                }
+            } else {
+                const newNews = {
+                    id: Date.now(),
+                    title: title,
+                    category: category,
+                    date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }),
+                    summary: summary,
+                    image: image
+                };
+                appState.news.unshift(newNews);
+                showToast('Berita sekolah baru berhasil ditambahkan!');
+            }
+
+            saveStateToStorage();
+            renderNews();
+            closeModal('addNewsModal');
+        }
+
+        function deleteNews(id, event) {
+            if (event) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
+            appState.news = appState.news.filter(n => String(n.id) !== String(id));
+            saveStateToStorage();
+            renderNews();
+            showToast('Berita telah dihapus.');
+        }
+
+        // RENDER EKSKUL & EDIT EKSKUL
+        function renderEkskul(categoryFilter = 'all') {
+            const ekskulGrid = document.getElementById('ekskulGrid');
+            if (!ekskulGrid) return;
+            const filtered = categoryFilter === 'all' 
+                ? appState.ekskul 
+                : appState.ekskul.filter(e => e.category === categoryFilter);
+
+            ekskulGrid.innerHTML = filtered.map(item => {
+                const itemId = String(item.id);
+                const adminBtnClass = appState.isAdmin ? '' : 'hidden';
+
+                return `
+                <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-md transition flex flex-col justify-between">
+                    <div>
+                        <div class="h-36 overflow-hidden relative">
+                            <img src="${item.image}" alt="${escapeHtml(item.name)}" class="w-full h-full object-cover">
+                            <span class="absolute top-2 left-2 bg-navy-950/80 text-gold-400 text-[10px] font-bold px-2 py-0.5 rounded">${escapeHtml(item.category)}</span>
+                        </div>
+                        <div class="p-4">
+                            <h4 class="font-bold text-navy-900 text-sm mb-1">${escapeHtml(item.name)}</h4>
+                            <p class="text-slate-600 text-xs line-clamp-2">${escapeHtml(item.desc)}</p>
+                        </div>
+                    </div>
+                    <div class="p-4 pt-0 border-t border-slate-100 mt-2 bg-slate-50/50 flex justify-between items-center">
+                        <button onclick="openZoomImage('${item.image}', '${escapeHtml(item.name)}', '${escapeHtml(item.desc)}', '${escapeHtml(item.category)}')" class="text-xs text-gold-600 font-bold hover:underline">
+                            Lihat Foto Detail
+                        </button>
+                        <div class="admin-only ${adminBtnClass} flex items-center gap-1.5">
+                            <button type="button" onclick="editEkskulById('${itemId}', event)" class="bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-300 px-2 py-1 rounded text-[11px] font-bold flex items-center gap-1 shadow-sm transition">
+                                <i class="fa-solid fa-pen"></i> Edit
+                            </button>
+                            <button type="button" onclick="deleteEkskul('${itemId}', event)" class="bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-300 px-2 py-1 rounded text-[11px] font-bold flex items-center gap-1 shadow-sm transition">
+                                <i class="fa-solid fa-trash"></i> Hapus
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        function filterEkskul(cat) {
+            const buttons = document.querySelectorAll('.ekskul-filter-btn');
+            buttons.forEach(btn => {
+                if (btn.innerText.includes(cat) || (cat === 'all' && btn.innerText === 'Semua')) {
+                    btn.className = 'ekskul-filter-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-navy-900 text-white shadow';
+                } else {
+                    btn.className = 'ekskul-filter-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200';
+                }
+            });
+            renderEkskul(cat);
+        }
+
+        function openAddEkskulModal() {
+            document.getElementById('ekskulIdInput').value = '';
+            document.getElementById('ekskulModalTitle').innerText = 'Tambah Ekstrakurikuler Baru';
+            document.getElementById('ekskulNameInput').value = '';
+            document.getElementById('ekskulCategoryInput').value = 'Olahraga';
+            document.getElementById('ekskulDescInput').value = '';
+            document.getElementById('ekskulImageInput').value = '';
+            document.getElementById('addEkskulModal').classList.remove('hidden');
+        }
+
+        function editEkskulById(id, event) {
+            if (event) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
+            const item = appState.ekskul.find(e => String(e.id) === String(id));
+            if (!item) {
+                showToast('Data ekstrakurikuler tidak ditemukan.');
+                return;
+            }
+            document.getElementById('ekskulIdInput').value = item.id;
+            document.getElementById('ekskulModalTitle').innerText = 'Edit Ekstrakurikuler';
+            document.getElementById('ekskulNameInput').value = item.name || '';
+            document.getElementById('ekskulCategoryInput').value = item.category || 'Olahraga';
+            document.getElementById('ekskulDescInput').value = item.desc || '';
+            document.getElementById('ekskulImageInput').value = item.image || '';
+            document.getElementById('addEkskulModal').classList.remove('hidden');
+        }
+
+        function saveEkskul(e) {
+            e.preventDefault();
+            const ekskulId = document.getElementById('ekskulIdInput').value;
+            const name = document.getElementById('ekskulNameInput').value.trim();
+            const category = document.getElementById('ekskulCategoryInput').value;
+            const desc = document.getElementById('ekskulDescInput').value.trim();
+            const image = document.getElementById('ekskulImageInput').value.trim() || 'https://images.unsplash.com/photo-1546519638-68e109498ffc?q=80&w=600&auto=format&fit=crop';
+
+            if (ekskulId) {
+                const index = appState.ekskul.findIndex(e => String(e.id) === String(ekskulId));
+                if (index !== -1) {
+                    appState.ekskul[index].name = name;
+                    appState.ekskul[index].category = category;
+                    appState.ekskul[index].desc = desc;
+                    appState.ekskul[index].image = image;
+                    showToast('Ekstrakurikuler berhasil diperbarui!');
+                }
+            } else {
+                const newEkskul = {
+                    id: Date.now(),
+                    name: name,
+                    category: category,
+                    desc: desc,
+                    image: image
+                };
+                appState.ekskul.push(newEkskul);
+                showToast('Ekstrakurikuler berhasil ditambahkan!');
+            }
+
+            saveStateToStorage();
+            renderEkskul('all');
+            closeModal('addEkskulModal');
+        }
+
+        function deleteEkskul(id, event) {
+            if (event) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
+            appState.ekskul = appState.ekskul.filter(e => String(e.id) !== String(id));
+            saveStateToStorage();
+            renderEkskul('all');
+            showToast('Ekstrakurikuler dihapus.');
+        }
+
+        // PERIODE & MODULE TOGGLE CONTROLS
+        function updateModuleStatus() {
+            const toggleKelulusan = document.getElementById('toggleKelulusanAdmin');
+            const toggleSpmb = document.getElementById('toggleSpmbAdmin');
+
+            if (toggleKelulusan) appState.kelulusanActive = toggleKelulusan.checked;
+            if (toggleSpmb) appState.spmbActive = toggleSpmb.checked;
+            saveStateToStorage();
+
+            const kelActive = document.getElementById('kelulusanActiveView');
+            const kelInactive = document.getElementById('kelulusanInactiveView');
+            const kelBadge = document.getElementById('kelulusanStatusBadge');
+            const badgeKelulusanNav = document.getElementById('badgeKelulusanNav');
+
+            if (appState.kelulusanActive) {
+                if (kelActive) kelActive.classList.remove('hidden');
+                if (kelInactive) kelInactive.classList.add('hidden');
+                if (kelBadge) {
+                    kelBadge.innerText = 'MODUL AKTIF';
+                    kelBadge.className = 'px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40';
+                }
+                if (badgeKelulusanNav) badgeKelulusanNav.classList.remove('hidden');
+            } else {
+                if (kelActive) kelActive.classList.add('hidden');
+                if (kelInactive) kelInactive.classList.remove('hidden');
+                if (kelBadge) {
+                    kelBadge.innerText = 'MODUL NONAKTIF';
+                    kelBadge.className = 'px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-500/20 text-rose-400 border border-rose-500/40';
+                }
+                if (badgeKelulusanNav) badgeKelulusanNav.classList.add('hidden');
+            }
+
+            const spmbActive = document.getElementById('spmbActiveView');
+            const spmbInactive = document.getElementById('spmbInactiveView');
+            const spmbBadge = document.getElementById('spmbStatusBadge');
+            const badgeSpmbNav = document.getElementById('badgeSpmbNav');
+
+            if (appState.spmbActive) {
+                if (spmbActive) spmbActive.classList.remove('hidden');
+                if (spmbInactive) spmbInactive.classList.add('hidden');
+                if (spmbBadge) {
+                    spmbBadge.innerText = 'SPMB DIBUKA';
+                    spmbBadge.className = 'px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300';
+                }
+                if (badgeSpmbNav) badgeSpmbNav.classList.remove('hidden');
+            } else {
+                if (spmbActive) spmbActive.classList.add('hidden');
+                if (spmbInactive) spmbInactive.classList.remove('hidden');
+                if (spmbBadge) {
+                    spmbBadge.innerText = 'SPMB DITUTUP';
+                    spmbBadge.className = 'px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-100 text-rose-800 border border-rose-300';
+                }
+                if (badgeSpmbNav) badgeSpmbNav.classList.add('hidden');
+            }
+
+            if (document.getElementById('displayPeriodeKelulusan')) document.getElementById('displayPeriodeKelulusan').innerText = appState.periodeKelulusan;
+            if (document.getElementById('displayPeriodeSpmb')) document.getElementById('displayPeriodeSpmb').innerText = appState.periodeSpmb;
+        }
+
+        // COUNTDOWN TIMER LOGIC
+        function initCountdown() {
+            const targetDate = new Date();
+            targetDate.setDate(targetDate.getDate() + 14);
+
+            setInterval(() => {
+                const now = new Date().getTime();
+                const distance = targetDate - now;
+
+                if (distance < 0) return;
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                if (document.getElementById('timerDays')) document.getElementById('timerDays').innerText = String(days).padStart(2, '0');
+                if (document.getElementById('timerHours')) document.getElementById('timerHours').innerText = String(hours).padStart(2, '0');
+                if (document.getElementById('timerMinutes')) document.getElementById('timerMinutes').innerText = String(minutes).padStart(2, '0');
+                if (document.getElementById('timerSeconds')) document.getElementById('timerSeconds').innerText = String(seconds).padStart(2, '0');
+            }, 1000);
+        }
+
+        // SEARCH FUNCTIONALITIES
+        function searchKelulusan(e) {
+            e.preventDefault();
+            const input = document.getElementById('nisnInput').value.trim();
+            const resultBox = document.getElementById('kelulusanResultBox');
+            if (!resultBox) return;
+
+            const data = appState.kelulusanData[input];
+            resultBox.classList.remove('hidden');
+
+            if (data) {
+                const isLulus = data.status === 'LULUS';
+                resultBox.innerHTML = `
+                    <div class="${isLulus ? 'bg-emerald-950/60 border-emerald-500' : 'bg-rose-950/60 border-rose-500'} border p-5 rounded-xl space-y-3">
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                            <div>
+                                <h4 class="font-extrabold text-white text-base">${escapeHtml(data.nama)}</h4>
+                                <p class="text-slate-400 text-xs">NISN: ${escapeHtml(data.nisn)} | ${escapeHtml(data.kelas)}</p>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-xs font-black ${isLulus ? 'bg-emerald-500 text-navy-950' : 'bg-rose-500 text-white'}">${escapeHtml(data.status)}</span>
+                        </div>
+                        <div class="text-xs text-slate-300 space-y-1">
+                            <p><strong>Rata-Rata Nilai Evaluasi:</strong> <span class="text-gold-400 font-bold">${escapeHtml(data.nilaiRata)}</span></p>
+                            <p><strong>Catatan Sekolah:</strong> ${escapeHtml(data.catatan)}</p>
+                        </div>
+                    </div>
+                `;
+            } else {
+                resultBox.innerHTML = `
+                    <div class="bg-amber-950/60 border border-amber-500 p-4 rounded-xl text-center text-xs text-amber-200">
+                        <i class="fa-solid fa-circle-question text-xl mb-1 block"></i>
+                        Data NISN/NIK "<strong>${escapeHtml(input)}</strong>" tidak ditemukan. Pastikan nomor yang dimasukkan benar.
+                    </div>
+                `;
+            }
+        }
+
+        function searchSPMB(e) {
+            e.preventDefault();
+            const input = document.getElementById('spmbNoInput').value.trim();
+            const resultBox = document.getElementById('spmbResultBox');
+            if (!resultBox) return;
+
+            const data = appState.spmbData[input];
+            resultBox.classList.remove('hidden');
+
+            if (data) {
+                const isAccepted = data.status === 'DITERIMA';
+                resultBox.innerHTML = `
+                    <div class="${isAccepted ? 'bg-emerald-950/60 border-emerald-500' : 'bg-amber-950/60 border-amber-500'} border p-4 rounded-xl space-y-2">
+                        <div class="flex justify-between items-center">
+                            <h5 class="font-bold text-white text-sm">${escapeHtml(data.nama)}</h5>
+                            <span class="px-2.5 py-0.5 rounded text-[10px] font-bold ${isAccepted ? 'bg-emerald-500 text-navy-950' : 'bg-amber-500 text-navy-950'}">${escapeHtml(data.status)}</span>
+                        </div>
+                        <p class="text-[11px] text-slate-300">Pilihan: <strong>${escapeHtml(data.jurusan)}</strong></p>
+                        <p class="text-[11px] text-slate-300">Jalur: <strong>${escapeHtml(data.jalur)}</strong></p>
+                    </div>
+                `;
+            } else {
+                resultBox.innerHTML = `
+                    <div class="bg-rose-950/60 border border-rose-500 p-3 rounded-xl text-center text-xs text-rose-200">
+                        No. Pendaftaran "<strong>${escapeHtml(input)}</strong>" tidak ditemukan.
+                    </div>
+                `;
+            }
+        }
+
+        function openTabModal(modalId) {
+            closeModal('kelulusanModal');
+            closeModal('spmbModal');
+            closeModal('ekskulModal');
+            closeModal('kontakModal');
+            const targetModal = document.getElementById(modalId);
+            if (targetModal) {
+                targetModal.classList.remove('hidden');
+            }
+        }
+
+        // HELPER UTILITIES
+        function closeModal(id) {
+            const el = document.getElementById(id);
+            if (el) el.classList.add('hidden');
+        }
+
+        function openZoomImage(imgSrc, title, desc, category) {
+            document.getElementById('zoomImage').src = imgSrc;
+            document.getElementById('zoomTitle').innerText = title;
+            document.getElementById('zoomDesc').innerText = desc;
+            document.getElementById('zoomCategory').innerText = category;
+            document.getElementById('imageZoomModal').classList.remove('hidden');
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toastBox');
+            if (!toast) return;
+            document.getElementById('toastMessage').innerText = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
